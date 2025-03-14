@@ -1,3 +1,4 @@
+///  Только 5 цифр
 public class NumericDictionaryManager extends DictionaryManager {
     public NumericDictionaryManager(String filePath) {
         super(filePath);
@@ -5,7 +6,7 @@ public class NumericDictionaryManager extends DictionaryManager {
 
     @Override
     public boolean addEntry(String key, String value) {
-        if (key.matches("\\d{5}")) { // Только 5 цифр
+        if (key.matches("\\d{5}")) {
             dictionary.put(key, value);
             saveToFile();
             return true;

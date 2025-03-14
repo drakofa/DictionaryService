@@ -1,3 +1,5 @@
+
+/// Только 4 латинские буквы
 public class LatinDictionaryManager extends DictionaryManager {
     public LatinDictionaryManager(String filePath) {
         super(filePath);
@@ -5,7 +7,7 @@ public class LatinDictionaryManager extends DictionaryManager {
 
     @Override
     public boolean addEntry(String key, String value) {
-        if (key.matches("[a-zA-Z]{4}")) { // Только 4 латинские буквы
+        if (key.matches("[a-zA-Z]{4}")) {
             dictionary.put(key, value);
             saveToFile();
             return true;

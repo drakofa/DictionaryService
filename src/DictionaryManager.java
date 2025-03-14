@@ -13,7 +13,7 @@ public abstract class DictionaryManager {
         loadDictionary();
     }
 
-    // Загружаем данные в HashMap
+    ///загрузка в hashmap
     public void loadDictionary() {
         dictionary.clear();
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
@@ -29,7 +29,8 @@ public abstract class DictionaryManager {
         }
     }
 
-    // Вывод всех записей
+
+    /// Вывод всех записей
     public void printDictionary() {
         if (dictionary.isEmpty()) {
             System.out.println("Словарь пуст.");
@@ -38,15 +39,15 @@ public abstract class DictionaryManager {
         }
     }
 
-    // Поиск перевода по ключу
+    /// Поиск перевода по ключу
     public String search(String key) {
         return dictionary.getOrDefault(key, "Слово не найдено");
     }
 
-    // Метод addEntry() будет разным в потомках (делаем его абстрактным)
+
     public abstract boolean addEntry(String key, String value);
 
-    // Удаление записи по ключу
+    /// Удаление записи по ключу
     public boolean removeEntry(String key) {
         if (dictionary.containsKey(key)) {
             dictionary.remove(key);
@@ -56,7 +57,7 @@ public abstract class DictionaryManager {
         return false;
     }
 
-    // Сохранение всех изменений в файл
+    /// Сохранение всех изменений в файл
     protected void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
             for (Map.Entry<String, String> entry : dictionary.entrySet()) {
