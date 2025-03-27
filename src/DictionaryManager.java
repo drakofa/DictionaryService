@@ -45,7 +45,8 @@ public abstract class DictionaryManager {
     }
 
 
-    public abstract boolean addEntry(String key, String value);
+    public abstract boolean addEntry(String key, String value)
+    ;
 
     /// Удаление записи по ключу
     public boolean removeEntry(String key) {
@@ -67,5 +68,27 @@ public abstract class DictionaryManager {
         } catch (IOException e) {
             System.out.println("Ошибка при записи в файл: " + e.getMessage());
         }
+    }
+    protected void updateFilePath(String newFilePath) {
+        File newFile = new File(newFilePath);
+
+        if (newFile.exists()) {
+            this.file = newFile;
+            loadDictionary();
+        } else {
+            try {
+                if (newFile.createNewFile()) {
+                    System.out.println("Файл создан: " + newFilePath);
+                } else {
+                    System.out.println("Ошибка: не удалось создать файл!");
+                    return;
+                }
+            } catch (IOException e) {
+                System.out.println("Ошибка при создании файла: " + e.getMessage());
+                return;
+            }
+        }
+
+        this.filePath = newFilePath;
     }
 }
