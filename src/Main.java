@@ -1,8 +1,14 @@
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
+
+        String dictionaryFilePathLatin = "dictionary1.txt";
+        String dictionaryFilePathNumber = "dictionary2.txt";
 
         System.out.println("Выберите словарь:");
         System.out.println("1 - Латинские буквы (4 символа)");
@@ -14,9 +20,9 @@ public class Main {
 
         DictionaryManager manager;
         if (choice == 1) {
-            manager = new LatinDictionaryManager("dictionary1.txt");
+            manager = new LatinDictionaryManager(dictionaryFilePathLatin);
         } else {
-            manager = new NumericDictionaryManager("dictionary2.txt");
+            manager = new NumericDictionaryManager(dictionaryFilePathNumber); // исправлено
         }
 
         while (true) {
@@ -26,6 +32,7 @@ public class Main {
             System.out.println("3 - Добавить слово");
             System.out.println("4 - Удалить слово");
             System.out.println("5 - Выход");
+            System.out.println("6 - Изменить путь к файлу");
             System.out.print("> ");
 
             int action = scanner.nextInt();
@@ -62,6 +69,11 @@ public class Main {
                     System.out.println("Выход...");
                     scanner.close();
                     return;
+                case 6:
+                    System.out.println("Введите новый путь к файлу:");
+                    String newPath = scanner.nextLine();
+                    manager.updateFilePath(newPath);
+                    break;
                 default:
                     System.out.println("Неверный ввод!");
             }
