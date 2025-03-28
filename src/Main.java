@@ -10,6 +10,9 @@ public class Main {
         String dictionaryFilePathLatin = "dictionary1.txt";
         String dictionaryFilePathNumber = "dictionary2.txt";
 
+        //D:\lab_work\directoryTest\dictionary.txt
+        //D:\lab_work\directoryTest\dictionary2.txt
+
         System.out.println("Выберите словарь:");
         System.out.println("1 - Латинские буквы (4 символа)");
         System.out.println("2 - Числа (5 символов)");
@@ -73,6 +76,7 @@ public class Main {
                     System.out.println("Введите новый путь к файлу:");
                     String newPath = scanner.nextLine();
                     manager.updateFilePath(newPath);
+
                     break;
                 default:
                     System.out.println("Неверный ввод!");

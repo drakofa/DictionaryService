@@ -10,8 +10,26 @@ public abstract class DictionaryManager {
     public DictionaryManager(String filePath) {
         this.filePath = filePath;
         this.file = new File(filePath);
+
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                System.out.println("Ошибка при создании файла: " + e.getMessage());
+            }
+        }
+
+        String marker = getDictionaryTypeMarker();
+        if (marker == null) {
+            // Если файл пуст, устанавливаем метку
+            setDictionaryTypeMarker(getDefaultMarker());
+        }
+
         loadDictionary();
     }
+
+    // Метод для получения стандартной метки словаря
+    protected abstract String getDefaultMarker();
 
     ///загрузка в hashmap
     public void loadDictionary() {
@@ -58,6 +76,27 @@ public abstract class DictionaryManager {
         return false;
     }
 
+    /// Метод для установки метки словаря в файле
+    void setDictionaryTypeMarker(String marker) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, false))) { // false = перезапись
+            bw.write(marker);
+            bw.newLine();
+        } catch (IOException e) {
+            System.out.println("Ошибка при установке типа словаря: " + e.getMessage());
+        }
+    }
+    /// Метод для получения метки словаря
+    String getDictionaryTypeMarker() {
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            return br.readLine(); // Первая строка — метка словаря
+        } catch (IOException e) {
+            System.out.println("Ошибка при чтении типа словаря: " + e.getMessage());
+            return null;
+        }
+    }
+
+
+
     /// Сохранение всех изменений в файл
     protected void saveToFile() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
@@ -72,13 +111,11 @@ public abstract class DictionaryManager {
     protected void updateFilePath(String newFilePath) {
         File newFile = new File(newFilePath);
 
-        if (newFile.exists()) {
-            this.file = newFile;
-            loadDictionary();
-        } else {
+        if (!newFile.exists()) {
             try {
                 if (newFile.createNewFile()) {
                     System.out.println("Файл создан: " + newFilePath);
+                    setDictionaryTypeMarker(getDefaultMarker());
                 } else {
                     System.out.println("Ошибка: не удалось создать файл!");
                     return;
@@ -89,6 +126,17 @@ public abstract class DictionaryManager {
             }
         }
 
+        // Проверяем метку словаря перед загрузкой
+        String marker = getDictionaryTypeMarker();
+        if (marker != null && !marker.equals(getDefaultMarker())) {
+            System.out.println("Ошибка! Выбранный файл предназначен для другого типа словаря.");
+            return;
+        }
+
+
         this.filePath = newFilePath;
+        this.file = newFile;
+        loadDictionary();
     }
+
 }
